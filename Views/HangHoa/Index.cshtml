@@ -1,0 +1,61 @@
+﻿@model IEnumerable<BTL.ViewModel.HangHoaVM>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "_DanhSachHangHoa";
+    int totalPages = (int)Math.Ceiling((double)ViewBag.TotalCount / ViewBag.PageSize);
+    int currentPage = ViewBag.Page;
+}
+
+<!-- Single Page Header start -->
+@section BreadCum {
+<div class="container-fluid page-header py-5">
+    <h1 class="text-center text-white display-6">Shop</h1>
+    <ol class="breadcrumb justify-content-center mb-0">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item"><a href="#">Pages</a></li>
+        <li class="breadcrumb-item active text-white">Shop</li>
+    </ol>
+</div>
+}
+<!-- Single Page Header End -->
+<!-- Fruits Shop Start-->
+<div class="row g-4 justify-content-center">@await Html.PartialAsync("Productitem", Model)</div>
+<div class="col-12">
+    <div class="pagination d-flex justify-content-center mt-5">
+        @if (totalPages > 1)
+        {
+            @if (currentPage > 1)
+            {
+                <a href="@Url.Action("Index", new { page = 1, search = Context.Request.Query["Search"], maLoai = Context.Request.Query["MaLoai"], minPrice = Context.Request.Query["MinPrice"], maxPrice = Context.Request.Query["MaxPrice"], sortBy = Context.Request.Query["SortBy"], sortDesc = Context.Request.Query["SortDesc"], pageSize = ViewBag.PageSize })" class="rounded">&laquo; First</a>
+                <a href="@Url.Action("Index", new { page = currentPage - 1, search = Context.Request.Query["Search"], maLoai = Context.Request.Query["MaLoai"], minPrice = Context.Request.Query["MinPrice"], maxPrice = Context.Request.Query["MaxPrice"], sortBy = Context.Request.Query["SortBy"], sortDesc = Context.Request.Query["SortDesc"], pageSize = ViewBag.PageSize })" class="rounded">&lt; Previous</a>
+            }
+
+            
+            int startPage = Math.Max(1, currentPage - 2); // Show up to 2 pages before current
+            int endPage = Math.Min(totalPages, currentPage + 2); // Show up to 2 pages after current
+            
+
+            @if (startPage > 1)
+            {
+                <span class="rounded">...</span>
+            }
+
+            @for (int i = startPage; i <= endPage; i++)
+            {
+                string activeClass = (i == currentPage) ? "active" : "";
+                <a href="@Url.Action("Index", new { page = i, search = Context.Request.Query["Search"], maLoai = Context.Request.Query["MaLoai"], minPrice = Context.Request.Query["MinPrice"], maxPrice = Context.Request.Query["MaxPrice"], sortBy = Context.Request.Query["SortBy"], sortDesc = Context.Request.Query["SortDesc"], pageSize = ViewBag.PageSize })" class="@activeClass rounded">@i</a>
+            }
+
+            @if (endPage < totalPages)
+            {
+                <span class="rounded">...</span>
+            }
+
+            @if (currentPage < totalPages)
+            {
+                <a href="@Url.Action("Index", new { page = currentPage + 1, search = Context.Request.Query["Search"], maLoai = Context.Request.Query["MaLoai"], minPrice = Context.Request.Query["MinPrice"], maxPrice = Context.Request.Query["MaxPrice"], sortBy = Context.Request.Query["SortBy"], sortDesc = Context.Request.Query["SortDesc"], pageSize = ViewBag.PageSize })" class="rounded">Next &gt;</a>
+                <a href="@Url.Action("Index", new { page = totalPages, search = Context.Request.Query["Search"], maLoai = Context.Request.Query["MaLoai"], minPrice = Context.Request.Query["MinPrice"], maxPrice = Context.Request.Query["MaxPrice"], sortBy = Context.Request.Query["SortBy"], sortDesc = Context.Request.Query["SortDesc"], pageSize = ViewBag.PageSize })" class="rounded">Last &raquo;</a>
+            }
+        }
+    </div>
+</div>

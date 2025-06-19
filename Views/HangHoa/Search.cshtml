@@ -1,0 +1,8 @@
+﻿@model IEnumerable<BTL.ViewModel.HangHoaVM>
+@{
+    ViewData["Title"] = "Search";
+    Layout = "_DanhSachHangHoa";
+    
+}
+@await Html.PartialAsync("Productitem", Model)
+
